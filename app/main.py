@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from . import models, schemas, utils
 from .database import engine, get_db
 from typing import List
-from .routers import post, user
+from .routers import post, user, auth
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -25,17 +25,9 @@ while True:
         print(f"Error occured: {error}")
         time.sleep(3)
 
-my_posts = [{"title": "title of post1", "content":"content of post 1", "id":1},
-     {"title":"favourite foods", "content": "I like pizza", "id":2}]
-
-def find_post(id):
-    for post in my_posts:
-        if(post['id'] == id):
-            return post
-    return None
-
 app.include_router(post.router)
 app.include_router(user.router)
+app.include_router(auth.router)
 
 @app.get("/")
 def root():
